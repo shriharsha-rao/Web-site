@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Amazon</title>
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<link rel="stylesheet" href="styl.css">
+<script>
+    // Check if user is properly authenticated
+    window.onload = function() {
+        // Check if user has the loggedIn session flag
+        const isLoggedIn = sessionStorage.getItem('loggedIn');
+        const currentUser = JSON.parse(sessionStorage.getItem('currentUser') || '{}');
+        
+        if (!isLoggedIn || isLoggedIn !== 'true') {
+            // User is not authenticated, redirect to login page
+            window.location.href = 'index.html';
+            return;
+        }
+        
+        // User is authenticated, allow access to the page
+        console.log('User authenticated successfully');
+        
+        // Display user information
+        displayUserInfo(currentUser);
+    };
+    
+    // Handle page refresh - redirect back to login
+    window.addEventListener('beforeunload', function() {
+        // Clear the login session on page refresh
+        sessionStorage.removeItem('loggedIn');
+        sessionStorage.removeItem('currentUser');
+    });
+    
+    // Also check if user tries to access the page directly
+    if (document.readyState === 'loading') {
+        // Page is still loading, check authentication
+        const isLoggedIn = sessionStorage.getItem('loggedIn');
+        if (!isLoggedIn || isLoggedIn !== 'true') {
+            window.location.href = 'index.html';
+        }
+    }
+    
+    function displayUserInfo(user) {
+        // Update the sign-in section with user info
+        const signInSection = document.querySelector('.nav-singin');
+        if (signInSection && user.username) {
+            signInSection.innerHTML = `
+                <p><span>Hello, ${user.username}</span></p>
+                <p class="nav-second">Account and Lists</p>
+            `;
+        }
+        
+        // Add logout button to navigation
+        const navigation = document.querySelector('.navbar');
+        if (navigation && !document.querySelector('.logout-btn')) {
+            const logoutBtn = document.createElement('button');
+            logoutBtn.className = 'logout-btn';
+            logoutBtn.textContent = 'Logout';
+            logoutBtn.style.cssText = `
+                background: #ff6b6b;
+                color: white;
+                border: none;
+                padding: 8px 16px;
+                border-radius: 4px;
+                cursor: pointer;
+                margin-left: 20px;
+                font-size: 14px;
+            `;
+            logoutBtn.onclick = logout;
+            navigation.appendChild(logoutBtn);
+        }
+    }
+    
+    function logout() {
+        if (confirm('Are you sure you want to logout?')) {
+            // Clear session
+            sessionStorage.removeItem('loggedIn');
+            sessionStorage.removeItem('currentUser');
+            
+            // Redirect to login page
+            window.location.href = 'index.html';
+        }
+    }
+</script>
+</head>
+<body>
+   <header>
+    <div class="navbar">
+    <div class="nav-logo border">
+    <div class="logoe"></div>
+</div>
+
+
+<div class="nav-address border">
+    <p class="add-first">Deliver to</p>
+    <div class="add-icon">
+<i class="fa-solid fa-location-dot"></i>
+        <p class="add-second">India</p>
+    </div>
+</div>
+
+
+<div class="nav-search">
+    <select class="search-select">
+        <option>All</option>
+    </select>
+    <input placeholder="Search Amazon" class="search-input">
+    <div class="search-icon">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    </div>
+</div>
+
+<div class="nav-singin border">
+    <p><span>Hello,sign in</span></p>
+    <p class="nav-second">Account and Lists</p>
+</div>
+
+<div class="nav-return border">
+    <p><span>Return</span></p>
+    <p class="nav-second">& Orders</p>
+</div>
+
+<div class="nav-cart border">
+   <i class="fa-solid fa-cart-shopping"></i>
+    cart
+</div>
+    </div>
+    <div class="panel">
+<div class="panel-all">
+    <i class="fa-solid fa-bars"></i>
+   All
+   </div>
+   <div class="panel-ops">
+    <p>Today's Deal</p>
+    <p>Customer Care</p>
+    <p>Registery</p>
+    <p>Gift Cards</p>
+    <p>Sell</p>
+   </div>
+   <div class="panel-deals">
+    Shop deals in Electrons
+   </div>
+   </div>
+   </header>
+   <div class="hero-section">
+    <div class="hero-msg">
+    <p>you are on amazon com.You can also shop on Amazon india for million of products with fast local Delivery. <a>Click here to go to amazon.in</a></p>
+    </div>
+   </div>
+   <div class="shop-section">
+    <div class="box1 box">
+       <div class="box-content">
+         <h2><center>Frictional Book</center></h2>
+        <div class="box-img" style="background-image: url('.vscode/book.png');"></div>
+        <p>see more</p>
+       </div>
+    </div>
+     <div class="box2 box"><div class="box-content">
+         <h2><center>PS5</center></h2>
+        <div class="box-img" style="background-image: url('.vscode/ps5.jpg');"></div>
+        <p>see more</p>
+       </div></div>
+     
+      <div class="box3 box"><div class="box-content">
+         <h2><center>Mobile</center></h2>
+        <div class="box-img" style="background-image: url('.vscode/mobile.png');"></div>
+        <p>see more</p>
+       </div></div>
+       <div class="box4 box"><div class="box-content">
+         <h2><center>Men</center></h2>
+        <div class="box-img" style="background-image: url('.vscode/men.png');"></div>
+        <p>see more</p>
+       </div></div>
+
+
+       <div class="box1 box">
+       <div class="box-content">
+         <h2><center>Women</center></h2>
+        <div class="box-img" style="background-image: url('.vscode/women.png');"></div>
+        <p>see more</p>
+       </div>
+    </div>
+     <div class="box2 box"><div class="box-content">
+         <h2><center>Gym Needs</center></h2>
+        <div class="box-img" style="background-image: url('.vscode/dum.png');"></div>
+        <p>see more</p>
+       </div></div>
+     
+      <div class="box3 box"><div class="box-content">
+         <h2><center>College Bag</center></h2>
+        <div class="box-img" style="background-image: url('.vscode/bag.png');"></div>
+        <p>see more</p>
+       </div></div>
+
+       <div class="box4 box"><div class="box-content">
+         <h2><center>Rolex Watch</center></h2>
+        <div class="box-img" style="background-image: url('.vscode/rol.png');"></div>
+        <p>see more</p>
+       </div></div>
+   </div>
+   <footer>
+    <div class="foot-panel1">
+        Back to Top
+    </div>
+    <div class="foot-panel2">
+       <ul>
+        <p> Get to Know Us</p>
+        <a> Careers</a>
+        <a>Blog</a>
+        <a>About Amazon</a>
+        <a>Investor Relations</a>
+        <a>Amazon Devices</a>
+        <a>Amazon Science</a>
+
+       </ul>
+        <ul>
+        <p>Make Money With Us</p>
+        <a> Careers</a>
+        <a>Blog</a>
+        <a>About Amazon</a>
+        <a>Investor Relations</a>
+        <a>Amazon Devices</a>
+        <a>Amazon Science</a>
+
+       </ul>
+        <ul>
+        <p>Amazon Payment Products/p>
+        <a> Careers</a>
+        <a>Blog</a>
+        <a>About Amazon</a>
+        <a>Investor Relations</a>
+        <a>Amazon Devices</a>
+        <a>Amazon Science</a>
+
+       </ul>
+        <ul>
+        <p>Let Us Help You</p>
+        <a> Careers</a>
+        <a>Blog</a>
+        <a>About Amazon</a>
+        <a>Investor Relations</a>
+        <a>Amazon Devices</a>
+        <a>Amazon Science</a>
+
+       </ul>
+    </div>
+
+    <div class="foot-panel3">
+        <div class="logo"></div>
+    </div>
+
+    <div class="foot-panel4">
+        <div class="pages">
+            <a>Conditions of use</a>
+            <a>Privacy Notice</a>
+            <a>Your Ads Privacy Choices</a>
+        </div>
+        <div class="copyright">
+            © 1996-2025, Amazon.com, Inc. or its affiliates
+        </div>
+    </div>
+
+   </footer>
+</body>
+</html>

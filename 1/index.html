@@ -1,0 +1,126 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UV-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <div class="navbar">
+    <div class="nav-logo border">
+    <div class="logo"></div>
+</div>
+</div>
+        <nav class="navigation">
+            <a href="#">Home</a>
+             <a href="#">About</a>
+              <a href="#">Services</a>
+               <a href="#">Contact </a>
+               <button class="btnLogin-popup">Login</button>
+        </nav>
+    </header>
+    <div class="wrapper active-popup">
+        <span class="icon-close">
+               <ion-icon name="close-outline"></ion-icon>
+        </span>
+        
+        <!-- URL Code Access Info -->
+        <div id="urlCodeInfo" style="display: none; background: #e8f5e8; border: 2px solid #4caf50; border-radius: 10px; padding: 20px; margin: 20px; text-align: center;">
+            <h3 style="color: #2e7d32; margin-bottom: 10px;">🔗 Access via URL Code</h3>
+            <p style="color: #2e7d32; margin-bottom: 15px;">You're accessing the system using code: <strong id="accessCodeDisplay"></strong></p>
+            <p style="color: #2e7d32; font-size: 14px;">Code Title: <span id="accessCodeTitleDisplay"></span></p>
+        </div>
+        
+      <div class="form-box login">
+        <h2>Login</h2>
+        <form id="loginForm">
+            <div class="input-box">
+                <span class="icon"><ion-icon name="mail"></ion-icon></span>
+                <input type="email" name="email" required>
+                <label>Email</label>
+            </div>
+
+             <div class="input-box">
+                <span class="icon"><ion-icon name="lock-closed"></ion-icon></span>
+                <input type="password" name="password" required>
+                <label>password</label>
+            </div>
+                <div class="remember-forgot">
+                <label><input type="checkbox">Remember me</label>
+            <a href="#">Forgot password</a>
+            </div>
+
+
+            <button type="submit" class="btn">Login</button>
+            <div class="login-register">
+                <p>Dont have an account?<a href="#" class="register-link">Register</a></p>
+            </div>
+        </form>
+      </div>
+
+
+
+      <div class="form-box register">
+        <h2>Registration</h2>
+        <form id="registerForm">
+            <div class="input-box">
+                <span class="icon">
+                    <ion-icon name="person"></ion-icon></span>
+                <input type="text" name="username" required>
+                <label>Username</label>
+            </div>
+
+             <div class="input-box">
+                <span class="icon"><ion-icon name="mail"></ion-icon></span>
+                <input type="email" name="email" required>
+                <label>Email</label>
+            </div>
+
+             <div class="input-box">
+                <span class="icon"><ion-icon name="lock-closed"></ion-icon></span>
+                <input type="password" name="password" required>
+                <label>password</label>
+            </div>
+                <div class="remember-forgot">
+                <label><input type="checkbox" required>I agree to the terms and condition</label>
+                
+           
+            </div>
+
+
+            <button type="submit" class="btn">Register</button>
+            <div class="login-register">
+                <p>Already have an account?<a href="#" 
+                    class="login-link">Login</a></p>
+            </div>
+        </form>
+      </div>
+    </div>
+    <script src="server.js"></script>
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+<script>
+    // Check if user accessed via URL code
+    document.addEventListener('DOMContentLoaded', function() {
+        const accessViaCode = sessionStorage.getItem('accessViaCode');
+        const accessCode = sessionStorage.getItem('accessCode');
+        const accessCodeTitle = sessionStorage.getItem('accessCodeTitle');
+        
+        if (accessViaCode === 'true' && accessCode) {
+            // Show URL code access info
+            document.getElementById('urlCodeInfo').style.display = 'block';
+            document.getElementById('accessCodeDisplay').textContent = accessCode;
+            document.getElementById('accessCodeTitleDisplay').textContent = accessCodeTitle || 'N/A';
+            
+            // Clear the session data after displaying
+            sessionStorage.removeItem('accessViaCode');
+            sessionStorage.removeItem('accessCode');
+            sessionStorage.removeItem('accessCodeTitle');
+        }
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Access System - Enter URL Code</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+            max-width: 500px;
+            width: 100%;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+        
+        .content {
+            padding: 40px;
+        }
+        
+        .url-code-form {
+            text-align: center;
+        }
+        
+        .url-code-form h2 {
+            color: #333;
+            margin-bottom: 30px;
+        }
+        
+        .input-group {
+            margin-bottom: 20px;
+        }
+        
+        .input-group input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 18px;
+            text-align: center;
+            letter-spacing: 2px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+        
+        .input-group input:focus {
+            outline: none;
+            border-color: #ff6b6b;
+            box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.1);
+        }
+        
+        .btn {
+            background: #ff6b6b;
+            color: white;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        
+        .btn:hover {
+            background: #ee5a24;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .message {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            font-weight: 500;
+        }
+        
+        .message.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .message.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .message.info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 20px;
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .footer a {
+            color: #ff6b6b;
+            text-decoration: none;
+        }
+        
+        .footer a:hover {
+            text-decoration: underline;
+        }
+        
+        .url-info {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+            text-align: left;
+        }
+        
+        .url-info h3 {
+            color: #333;
+            margin-bottom: 15px;
+        }
+        
+        .url-info p {
+            margin-bottom: 10px;
+            color: #666;
+        }
+        
+        .url-info .highlight {
+            color: #ff6b6b;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔗 Access System</h1>
+            <p>Enter your URL code to continue</p>
+        </div>
+        
+        <div class="content">
+            <div class="url-code-form">
+                <h2>Enter URL Code</h2>
+                <div class="input-group">
+                    <input type="text" id="urlCodeInput" placeholder="Enter code here..." maxlength="20" autocomplete="off">
+                </div>
+                <button class="btn" onclick="validateUrlCode()" id="submitBtn">Access System</button>
+                
+                <div id="message" class="message" style="display: none;"></div>
+                
+                <div id="urlInfo" class="url-info" style="display: none;">
+                    <h3>Code Information</h3>
+                    <p><strong>Title:</strong> <span id="codeTitle"></span></p>
+                    <p><strong>Uses:</strong> <span id="codeUses"></span></p>
+                    <p><strong>Expiry:</strong> <span id="codeExpiry"></span></p>
+                    <div id="codeMessage" style="display: none;">
+                        <p><strong>Message:</strong> <span id="codeMessageText"></span></p>
+                    </div>
+                    <button class="btn" onclick="proceedToSystem()" style="margin-top: 15px;">Continue to System</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>Don't have a code? <a href="index.html">Register or Login</a></p>
+        </div>
+    </div>
+
+    <script>
+        let currentUrlCode = null;
+        
+        // Allow Enter key to submit
+        document.getElementById('urlCodeInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                validateUrlCode();
+            }
+        });
+        
+        // Auto-format input to uppercase
+        document.getElementById('urlCodeInput').addEventListener('input', function(e) {
+            e.target.value = e.target.value.toUpperCase();
+        });
+        
+        function validateUrlCode() {
+            const code = document.getElementById('urlCodeInput').value.trim().toUpperCase();
+            
+            if (!code) {
+                showMessage('Please enter a URL code!', 'error');
+                return;
+            }
+            
+            // Get URL codes from localStorage
+            const urlCodes = JSON.parse(localStorage.getItem('urlCodes')) || [];
+            const urlCode = urlCodes.find(uc => uc.code === code);
+            
+            if (!urlCode) {
+                showMessage('Invalid URL code! Please check and try again.', 'error');
+                return;
+            }
+            
+            if (!urlCode.isActive) {
+                showMessage('This URL code is currently inactive.', 'error');
+                return;
+            }
+            
+            // Check expiry
+            if (urlCode.expiryDate && new Date(urlCode.expiryDate) < new Date()) {
+                showMessage('This URL code has expired.', 'error');
+                return;
+            }
+            
+            // Check max uses
+            if (urlCode.maxUses > 0 && urlCode.currentUses >= urlCode.maxUses) {
+                showMessage('This URL code has reached its maximum usage limit.', 'error');
+                return;
+            }
+            
+            // Show success message and code info
+            currentUrlCode = urlCode;
+            showMessage('URL code validated successfully!', 'success');
+            showUrlCodeInfo(urlCode);
+        }
+        
+        function showMessage(text, type) {
+            const messageDiv = document.getElementById('message');
+            messageDiv.textContent = text;
+            messageDiv.className = `message ${type}`;
+            messageDiv.style.display = 'block';
+            
+            // Hide message after 5 seconds
+            setTimeout(() => {
+                messageDiv.style.display = 'none';
+            }, 5000);
+        }
+        
+        function showUrlCodeInfo(urlCode) {
+            document.getElementById('codeTitle').textContent = urlCode.title;
+            document.getElementById('codeUses').textContent = `${urlCode.currentUses} / ${urlCode.maxUses === 0 ? '∞' : urlCode.maxUses}`;
+            document.getElementById('codeExpiry').textContent = urlCode.expiryDate ? new Date(urlCode.expiryDate).toLocaleDateString() : 'No expiry';
+            
+            if (urlCode.message) {
+                document.getElementById('codeMessageText').textContent = urlCode.message;
+                document.getElementById('codeMessage').style.display = 'block';
+            } else {
+                document.getElementById('codeMessage').style.display = 'none';
+            }
+            
+            document.getElementById('urlInfo').style.display = 'block';
+        }
+        
+        function proceedToSystem() {
+            if (!currentUrlCode) {
+                showMessage('Please validate a URL code first!', 'error');
+                return;
+            }
+            
+            // Increment usage count
+            let urlCodes = JSON.parse(localStorage.getItem('urlCodes')) || [];
+            const urlCodeIndex = urlCodes.findIndex(uc => uc.id === currentUrlCode.id);
+            
+            if (urlCodeIndex !== -1) {
+                urlCodes[urlCodeIndex].currentUses++;
+                localStorage.setItem('urlCodes', JSON.stringify(urlCodes));
+            }
+            
+            // Store access info in session
+            sessionStorage.setItem('accessViaCode', 'true');
+            sessionStorage.setItem('accessCode', currentUrlCode.code);
+            sessionStorage.setItem('accessCodeTitle', currentUrlCode.title);
+            
+            // Redirect to main system
+            window.location.href = 'index.html';
+        }
+        
+        // Focus on input when page loads
+        window.onload = function() {
+            document.getElementById('urlCodeInput').focus();
+            
+            // Check if there's a code in the URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const codeFromUrl = urlParams.get('code');
+            
+            if (codeFromUrl) {
+                // Auto-fill the code and show info
+                document.getElementById('urlCodeInput').value = codeFromUrl.toUpperCase();
+                validateUrlCode();
+            }
+        };
+    </script>
+</body>
+</html>
